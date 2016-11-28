@@ -1,0 +1,27 @@
+{
+  "name": "haxyclosures",
+  "version": "1.0.0",
+  "description": "Functional Utilities and conventions for javascript and node",
+  "main": "HaxyClosures.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidDworetzky/HaxyClosures.git"
+  },
+  "keywords": [
+    "functional",
+    "utilities",
+    "utils"
+  ],
+  "author": "David Dworetzky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavidDworetzky/HaxyClosures/issues"
+  },
+  "homepage": "https://github.com/DavidDworetzky/HaxyClosures#readme"
+}
