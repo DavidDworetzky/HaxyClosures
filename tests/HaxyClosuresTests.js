@@ -1,5 +1,4 @@
 var assert = require('assert');
-var q = require('q');
 var _ = require('underscore');
 var hx$ = require('../HaxyClosures.js');
 assert.ok(1, 'test');

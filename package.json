@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/DavidDworetzky/HaxyClosures/issues"
   },
-  "homepage": "https://github.com/DavidDworetzky/HaxyClosures#readme"
+  "homepage": "https://github.com/DavidDworetzky/HaxyClosures#readme",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
 }
