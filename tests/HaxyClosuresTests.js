@@ -79,6 +79,7 @@ fixtures.AddPropsSetA = {};
 fixtures.AddPropsSetB = {'a' : 2, 'b' : 3};
 hx$.AddProps(fixtures.AddPropsSetA, fixtures.AddPropsSetB);
 assert.ok(fixtures.AddPropsSetA.a === 2 && fixtures.AddPropsSetA.b === 3);
+hx$.log('Assertions Complete');
 
 
 

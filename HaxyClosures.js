@@ -26,7 +26,7 @@
         };
         root.LogLevel = root.LogTypes.info;
         //log gate
-        root.Log = (function (message, level)
+        root.Log = function (message, level)
         {
             //the default log level is info
             if(typeof(level) == 'undefined')
@@ -41,32 +41,32 @@
             {
                 console.log(message);
             }
-        });
+        };
         //aliasing
         root.log = root.Log;
 
-        root.Error = (function()
+        root.Error = function()
         {
             return root.Log(root.LogTypes.error);
-        });
+        };
         root.error = root.Error;
 
-        root.Warn = (function()
+        root.Warn = function()
         {
             return root.Log(root.LogTypes.warn);
-        });
+        };
         root.warn = root.Warn;
 
-        root.Info = (function()
+        root.Info = function()
         {
             return root.Log(root.LogTypes.info);
-        });
+        };
         root.info = root.Info;
 
 
         //DATASTRUCTURES AND METHODS
         //http://stackoverflow.com/questions/6906916/collisions-when-generating-uuids-in-javascript
-        root.GUID = (function GUID(options) {
+        root.GUID = function GUID(options) {
 
             //if we request an empty guid... return nothing.
             if (options !== undefined) {
@@ -78,20 +78,20 @@
                 var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
-        });
+        };
 
         //alias to Guid as well as GUID
         root.Guid = root.GUID;
 
-        root.GetKeyByValue = (function (obj, value) {
+        root.GetKeyByValue = function (obj, value) {
             for (var prop in obj) {
                 if (obj.hasOwnProperty(prop)) {
                     if (obj[prop] === value)
                         return prop;
                 }
             }
-        });
-        root.TryGetValue = (function (obj, property, result) {
+        };
+        root.TryGetValue = function (obj, property, result) {
             for (var prop in obj) {
                 if (obj.hasOwnProperty(property)) {
                     if (prop === property) {
@@ -103,8 +103,8 @@
             //false
             result.result = 0;
             return undefined;
-        });
-        root.CopyProps = (function(model1, model2, fn)
+        };
+        root.CopyProps = function(model1, model2, fn)
         {
             for(var element2 in model2)
             {
@@ -116,9 +116,9 @@
                     }
                 }
             }
-        });
+        };
 
-        root.AddProps = (function(model1, model2)
+        root.AddProps = function(model1, model2)
         {
             for(var element2 in model2)
             {
@@ -126,12 +126,11 @@
                     model1[element2] = model2[element2]
                 }
             }
-        });
+        };
 
         //ApplyArgs applies a function and an accumulator over a list of operations
-        root.ApplyArgs = (function(fn, accumulator, args)
+        root.ApplyArgs = function(fn, accumulator, args)
         {
-            var self = this;
             var args = Array.prototype.slice.apply(arguments);
             fn = args.shift();
             accumulator = args.shift();
@@ -144,32 +143,35 @@
                 }
             }
             return accumulator;
-        });
+        };
 
-        root.StatefulObject = (function (States, Cyclical) {
-            //States, array of States
-            this.States = States;
-            this.Cyclical = Cyclical;
+        class StatefulObject
+        {
+            constructor(States, Cyclical)
+            {
+                //States, array of States
+                this.States = States;
+                this.Cyclical = Cyclical;
 
-            this.CurrState = 0;
+                this.CurrState = 0;
 
-            this.ObservedState = (function () {
+            }
+            ObservedState (){
                 return this.States[this.CurrState];
-            });
-            //Advance State 
-            this.AdvanceState = (function () {
-                var self = this;
-                if (self.States.length > self.CurrState + 1) {
-                    self.CurrState = self.CurrState + 1;
+            }
+            AdvanceState (){
+                if (this.States.length > this.CurrState + 1) {
+                    this.CurrState = this.CurrState + 1;
                 }
-                else if (self.States.length === self.CurrState + 1 && self.Cyclical === 1) {
-                    self.CurrState = 0;
+                else if (this.States.length === this.CurrState + 1 && this.Cyclical === 1) {
+                    this.CurrState = 0;
                 }
-            });
-        });
+            }
+        }
 
+        root.StatefulObject = StatefulObject;
 
-        root.foreach = (function (array, func) {
+        root.foreach = function (array, func) {
 
             //first we check to see if this is legitimately an array. If not, we treat execution as if it should be done
             //one singleton.
@@ -184,23 +186,23 @@
             else {
                 func(array);
             }
-        });
+        };
 
         //aliasing
         root.ForEach = root.foreach;
 
-        root.foreachReverse = (function (array, func)
+        root.foreachReverse = function (array, func)
         {
             //reverse array then foreach it.
             array.sort(function(a, b){if(a > b) return -1; else if (a < b) return 1; else return 0;});
             root.foreach(array, func);
-        });
+        };
 
         //aliasing
 
         root.ForEachReverse = root.foreachReverse;
 
-        root.where = (function (array, comparison) {
+        root.where = function (array, comparison) {
             var values = [];
             for (var i = 0; i < array.length; i++) {
                 if (comparison(array[i])) {
@@ -208,57 +210,57 @@
                 }
             }
             return values;
-        });
+        };
 
         //aliasing
         root.Where = root.where;
 
-        root.select = (function (array, xform) {
+        root.select = function (array, xform) {
             var values = [];
             for (var i = 0; i < array.length; i++)
             {
                 values.push(xform(array[i]));
             }
             return values;
-        });
+        };
 
         root.Select = root.select;
 
         //array intersection and exclusion
-        root.intersect = (function(a1, a2)
+        root.intersect = function(a1, a2)
         {
             if(a1 === undefined || a2 === undefined) return [];
             return root.where(a1, function(element)
             {
                 return a2.indexOf(element) !== -1;
             })
-        });
+        };
 
         //aliasing
         root.Intersect = root.intersect;
 
-        root.exclude = (function(a1, a2)
+        root.exclude = function(a1, a2)
         {
             if(a1 === undefined) return [];
             return root.where(a1, function(element)
             {
                 return a2.indexOf(element) === -1;
-        })
-        });
+            });
+        };
 
         //aliasing
         root.Exclude = root.exclude;
 
-        root.last = (function (array)
+        root.last = function (array)
         {
             return array[array.length - 1];
-        });
+        };
         //aliasing
         root.Last = root.last;
 
 
 
-        root.single = (function (array, comparison) {
+        root.single = function (array, comparison) {
             var values = [];
             for (var i = 0; i < array.length; i++) {
                 if (comparison(array[i])) {
@@ -266,10 +268,10 @@
                 }
             }
             return undefined;
-        });
+        };
         //aliasing
         root.Single = root.single;
-        root.removeFirst = (function (array, comparison) {
+        root.removeFirst = function (array, comparison) {
             var toRemove = -1;
             for (var i = 0; i < array.length; i++) {
                 if (comparison(array[i]))
@@ -279,11 +281,11 @@
             }
             if (toRemove !== -1) { array.splice(toRemove, 1); }
             return array;
-        });
+        };
         //aliasing
         root.RemoveFirst = root.removeFirst;
 
-        root.enumToArray = (function (enm)
+        root.enumToArray = function (enm)
         {
             var vals = [];
             for(var val in enm)
@@ -291,11 +293,11 @@
                 vals.push(val)
             }
             return vals;
-        });
+        };
         //aliasing
         root.EnumToArray = root.enumToArray;
 
-	root.getKeys = (function(obj)
+	root.getKeys = function(obj)
 	{
 	    var vals = [];
 	    for(var property in obj)
@@ -306,11 +308,11 @@
 			}
 		}
 	    return vals;
-	});
+	};
         //aliasing
         root.GetKeys = root.getKeys;
 
-        root.singleOrDefault = (function (array, comparison) {
+        root.singleOrDefault = function (array, comparison) {
             if (array.length !== 0) {
                 var result = root.single(array, comparison);
                 if (result === undefined) {
@@ -323,39 +325,39 @@
             else {
                 return undefined
             }
-        });
+        };
         //aliasing
         root.SingleOrDefault = root.singleOrDefault;
 
 
-        root.trimTo = (function(character, string)
+        root.trimTo = function(character, string)
         {
             var index = string.indexOf(character);
             return string.substring(index + 1, string.length);
-        });
+        };
         //aliasing
         root.TrimTo = root.trimTo;
 
         //simple key value pair
-        root.KeyValue = (function(key, value)
+        root.KeyValue = function(key, value)
         {
             var obj = {};
             obj[key] = value;
             return obj;
-        });
+        };
         //INHERITANCE AND COMPOSITION
         //after this is called, the constructor for the base method also needs to invoke the base constructor...
-        root.Inherits = (function (target, source) {
+        root.Inherits = function (target, source) {
             //store constructor
             var temp = source;
             //source is a _target object.
             source.prototype = target;
             //Correct constructor prototype reference... 
             source.prototype.constructor = temp;
-        });
+        };
 
         //only use with primitive objects, and consider using _.extend instead.
-        root.MixInto = (function (target, source, methodNames) {
+        root.MixInto = function (target, source, methodNames) {
             // ignore the actual args list and build from arguments so we can
             // be sure to get all of the method names
             var args = Array.prototype.slice.apply(arguments);
@@ -372,10 +374,10 @@
                 // bound function to the target
                 source[method] = _.bind(target[method], source);
             }
-        });
+        };
 
         //given two closures i.e. constructors for objects, return a new object that is an amalgam of the two
-        root.DynamicMixInto = (function (target, source, methodNames) {
+        root.DynamicMixInto = function (target, source, methodNames) {
             var args = Array.prototype.slice.apply(arguments);
             target = args.shift();
             source = args.shift();
@@ -394,8 +396,7 @@
 
             }
             return obj2;
-
-        });
+        };
 
         // Export the hx$ object for **Node.js**, with
         // backwards-compatibility for the old `require()` API. If we're in
